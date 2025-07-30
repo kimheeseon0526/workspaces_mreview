@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.11.0/axios.min.js" integrity="sha512-h9644v03pHqrIHThkvXhB2PJ8zf5E9IyVnrSfZg8Yj8k4RsO4zldcQc4Bi9iVLUCCsqNY0b4WXVV4UB+wbWENA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+  <input type="file" name="files" multiple>
+  <button id="btnUpload" class="btn-upload">upload</button>
+
+<script>
+  const btnUpload = document.querySelector('#btnUpload');
+  btnUpload.addEventListener('click', (event) => {
+    event.preventDefault();
+    const formData = new FormData();
+
+    const files = document.querySelector("[type=file]").files;
+    for (const file of files) {
+      console.log(file);
+      formData.append("files", file);
+    }
+    // formData.append('file', event.target.files[0]);
+
+    //axios 스타일
+    console.log(axios);
+    (async () => {
+      const resp = await axios.post('/uploadAjax', formData, {
+      headers: {
+        'content-type': 'multipart/form-data'
+      }
+    });
+      console.log("업로드 완료")
+      console.log(resp)
+  })();
+  })
+</script>
+</body>
+</html>
+
+

@@ -1,0 +1,21 @@
+package com.levelupseon.mreview.domain.entity;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+@Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@ToString(exclude = "movie")
+public class MovieImage {
+  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long inum;
+
+  private String uuid;
+  private String imgName;
+  @ManyToOne(fetch = FetchType.LAZY)
+  private Movie movie;
+
+}

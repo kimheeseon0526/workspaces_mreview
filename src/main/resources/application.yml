@@ -1,0 +1,23 @@
+spring:
+  config:
+    import:
+      - optional:classpath:./secret/db.yml
+  application:
+    name: guestbook
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database-platform: org.hibernate.dialect.MariaDBDialect
+    properties:
+      hibernate:
+        format_sql: true
+  thymeleaf:
+    cache: false
+  servlet:
+    multipart:
+      enabled: true  #: 파일 업로드 가능 여부
+      location: d:/upload  #: 파일 업로드 저장 경로
+      max-request-size: 30MB
+      max-file-size: 10MB
+
