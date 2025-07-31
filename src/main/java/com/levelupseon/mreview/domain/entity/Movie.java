@@ -6,6 +6,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Builder
 @AllArgsConstructor
@@ -17,4 +19,5 @@ public class Movie extends BaseEntity{
   private Long mno;
 
   private String title;
+
 }

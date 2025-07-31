@@ -68,6 +68,16 @@ dependencies {
   implementation 'org.mapstruct:mapstruct:1.6.3' // DTO ↔ Entity 간 변환 코드를 자동 생성
   annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
   annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0' // 맵 스트럭트가 롬복과 충돌 방지
+
+
+  //썸네일 관련
+  implementation 'net.coobird:thumbnailator:0.4.20'
+  implementation 'org.sejda.imageio:webp-imageio:0.1.6'
+//  implementation 'org.sejda.imageio:webp-imageio:0.1.1'
+  implementation 'com.twelvemonkeys.imageio:imageio-webp:3.12.0'
+  implementation 'com.twelvemonkeys.imageio:imageio-bmp:3.12.0'
+
+
 }
 
 configurations {

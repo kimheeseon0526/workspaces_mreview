@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.11.0/axios.min.js" integrity="sha512-h9644v03pHqrIHThkvXhB2PJ8zf5E9IyVnrSfZg8Yj8k4RsO4zldcQc4Bi9iVLUCCsqNY0b4WXVV4UB+wbWENA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<th:block th:replace="~{/layout/index :: setContent(~{this::content})}">
+  <th:block th:fragment="content">
+    <h1 class="my-3">Movie Register Page</h1>
+    <form th:action="@{/movie/register}" method="post" class="register-form">
+
+      <div class="form-group my-3">
+        <label for="title">title</label>
+        <input class="form-control" id="title" name="title" placeholder="Title"></input>
+      </div>
+
+      <div class="form-group my-3">
+        <label for="files">Image Files</label>
+        <input type="file" class="form-control" id="files" multiple accept="image/*"></input>
+      </div>
+      <ul class="box my-3 upload-list "></ul>
+<!--      <input type="hidden" name="list[0].uuid" value="1234" />-->
+      <button type="submit" class="btn btn-primary">Submit</button>
+
+    </form>
+    <script>
+      document.querySelector(".register-form").addEventListener("submit", (event) => {
+        event.preventDefault();
+        event.target.innerHTML += [...document.querySelectorAll(".upload-list li")].map(function (el, index) {
+          // console.log(e.dataset);
+          const obj = {...el.dataset};
+          console.log(obj)
+          let str = "";
+          for(const x in obj){
+            str += `<input type="hidden" name="list[${index}].${x}" value="${obj[x]}">`;
+          }
+          return str;
+        }).join("") //엄밀히 따지면 한문장
+        event.target.submit();
+      })
+
+      const btnUpload = document.querySelector('#btnUpload');
+
+      window.addEventListener('load', (event) => {
+        document.querySelector('.upload-list').addEventListener('click', (event) => {
+          if(event.target.matches('button, button i')){
+            event.target.closest('li').remove();
+          }
+        })
+      });
+
+      document.querySelector("#files").addEventListener('change', (event) => {
+        event.preventDefault();
+        const formData = new FormData();
+
+        const files = document.querySelector("[type=file]").files;
+        for (const file of files) {
+          console.log(file);
+          formData.append("files", file);
+        }
+
+        console.log(axios);
+        (async () => {
+              try {
+                const resp = await axios.post('/uploadAjax', formData, {
+                  headers: {
+                    "content-Type": "multipart/form-data",
+                  }
+                });
+
+                console.log("업로드 완료");
+                console.log(resp.data);
+                document.querySelector(".upload-list").innerHTML += resp.data.map(ele => {
+                  return `<li data-uuid="${ele.uuid}" data-origin="${ele.origin}" data-path="${ele.path}">
+                          <img src="/display${ele.thumb}" alt=${ele.origin}><button class="btn"><i class="fa-solid fa-x"></i></button>
+                        </li>`;
+                }).join("");
+
+
+              } catch (error) {
+                console.log(error);
+                if (error.response) {
+
+
+                  const status = error.response.status;
+                  if (status === 400) {
+                    alert(error.response.data);
+                  } else if (status === 500) {
+                    alert("서버 오류가 발생했습니다")
+                  }
+                } else {
+                  alert("알수 없는 오류");
+                }
+              }
+            }
+        )();
+
+      })
+    </script>
+  </th:block>
+</th:block>
+</html>
