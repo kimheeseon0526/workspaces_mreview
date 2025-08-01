@@ -77,6 +77,8 @@ dependencies {
   implementation 'com.twelvemonkeys.imageio:imageio-webp:3.12.0'
   implementation 'com.twelvemonkeys.imageio:imageio-bmp:3.12.0'
 
+  implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.9'
+
 
 }
 

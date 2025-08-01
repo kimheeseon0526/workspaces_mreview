@@ -36,7 +36,7 @@ public sealed interface MovieService permits MovieServiceImpl {
             .title(movie.getTitle())
             .regDate(movie.getRegDate())
             .modDate(movie.getModDate())
-            .list(images.stream().map(i -> i == null ?  null : MovieImageDTO.builder()
+            .list(images.stream().map(i -> i == null ? null : MovieImageDTO.builder()
                     .origin(i.getImgName())
                     .uuid(i.getUuid())
                     .path(i.getPath())
@@ -45,4 +45,7 @@ public sealed interface MovieService permits MovieServiceImpl {
             .reviewCnt(reviewCnt)
             .build();
   }
+
+
+  MovieDTO get(Long mno);
 }

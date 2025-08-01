@@ -12,9 +12,17 @@ public class MovieServiceTest {
 
   @Autowired
   private MovieService service;
+  @Autowired
+  private MovieService movieService;
 
   @Test
   public void testList() {
     service.getList(PageRequestDTO.builder().build()).getList().forEach(log::info);
+  }
+
+  @Test
+  public void testGet() {
+    Long mno = 100L;
+    log.info(movieService.get(mno));
   }
 }

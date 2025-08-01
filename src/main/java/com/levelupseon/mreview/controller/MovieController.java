@@ -2,9 +2,11 @@ package com.levelupseon.mreview.controller;
 
 import com.levelupseon.mreview.domain.dto.MovieDTO;
 import com.levelupseon.mreview.domain.dto.PageRequestDTO;
+import com.levelupseon.mreview.domain.dto.PageResponseDTO;
 import com.levelupseon.mreview.service.MovieService;
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +35,13 @@ public class MovieController {
 
   @GetMapping("list")
   public void list(@ModelAttribute("requestDto") PageRequestDTO pageRequestDTO, Model model) {
+//    PageResponseDTO<?,?> dto = movieService.getList(pageRequestDTO);
+//    log.info(dto);
     model.addAttribute("movies", movieService.getList(pageRequestDTO));
+  }
+
+  @GetMapping("read")
+  public void read(@ModelAttribute("requestDto") PageRequestDTO dto, Long mno, Model model) {
+    model.addAttribute("dto", movieService.get(mno));
   }
 }

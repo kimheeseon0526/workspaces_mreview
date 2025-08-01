@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <th:block th:replace="~{/layout/index :: setContent(~{this::content})}">
+    <th:block th:fragment="content">
+      <h1 class="my-3">movie List Page
+      <span>
+        <a th:href="@{/movie/register}" class="btn btn-outline-primary">REGISTER</a>
+      </span>
+      </h1>
+
+      <form action="/movie/list" method="get" id="searchForm">
+        <input type="hidden" name="page" value="1"/>
+        <input type="hidden" name="size" th:value="${movies.size}"/>
+        <div class="input-group">
+          <select class="form-select" name="type">
+            <option th:selected="${requestDto.type == null}">----------</option>
+            <option th:selected="${requestDto.type == 't'}" value="t">제목</option>
+            <option th:selected="${requestDto.type == 'c'}" value="c">내용</option>
+            <option th:selected="${requestDto.type == 'w'}" value="w">작성자</option>
+            <option th:selected="${requestDto.type == 'tc'}" value="tc">제목 + 내용</option>
+            <option th:selected="${requestDto.type == 'tcw'}" value="tcw">제목 + 내용 + 작성자</option>
+          </select>
+          <input type="text" class="form-control w-50" name="keyword" th:value="${requestDto.keyword}"/>
+          <button class="btn btn-outline-secondary" >Search</button>
+          <button class="btn btn-outline-secondary" onclick="this.closest('form').querySelectorAll('select, input[name=keyword]').forEach(el => el.remove()); ">Clear</button>
+        </div>
+      </form>
+
+      <table class="table table-striped table-bordered table-hover my-3">
+        <thead>
+        <tr>
+          <th scope="col">Mno</th>
+          <th scope="col">Title</th>
+          <th scope="col">ReviewCnt</th>
+          <th scope="col">Age rating</th>
+          <th scope="col">Regdate</th>
+        </tr>
+        </thead>
+        <tr th:each=" m : ${movies.list}">
+          <th scope="row">[[${m.mno}]]</th>
+          <td><a th:href="@{'/movie/read' + ${requestDto.qs2} + '&mno=' + ${m.mno}}">
+            <img th:if="${m.list.size() > 0 && m.list[0] != null && m.list[0].path != null}" th:src="'/display' + ${m.list[0].thumb}" onerror="this.src='https://placehold.co/200x200'">
+            [[${m.title}]]</a>
+          </td>
+          <td>[[${m.reviewCnt}]]</td>
+          <td th:text="${m.avg}"></td>
+          <td th:text="${#temporals.format(m.regDate, 'yyyy/MM/dd HH:mm:ss')}"></td>
+        </tr>
+      </table>
+      <ul class="pagination justify-content-center">
+        <li class="page-item"><a class="page-link" href="#" th:href="@{'/movie/list' + ${pageRequest.qs} + '&page=' + ${movies.start - 1}}" th:if="${movies.prev}">Prev</a></li>
+        <li th:class="'page-item' + ${movies.page == page ? 'active' : ''}" th:each="page : ${movies.pageList}"><a class="page-link" th:href="@{/movie/list(page = ${page}, size = ${movies.size}, type=${requestDto.type}, keyword= ${requestDto.keyword})}">[[${page}]]</a></li>
+        <li class="page-item"><a class="page-link" href="#" th:href="@{/movie/list(page = ${movies.end + 1}, size = ${movies.size}, type=${requestDto.type}, keyword= ${requestDto.keyword})}" th:if="${movies.next}">Next</a></li>
+      </ul>
+
+      <!-- The Modal -->
+      <div class="modal" id="myModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">Modal Heading</h4>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+              Modal body..
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <script th:inline="javascript">
+        window.onload = function() {
+          let msg = [[${msg}]];
+          console.log(msg)
+          if(msg){
+            var myModal = new bootstrap.Modal(document.getElementById('myModal'))
+            myModal.show()
+          }
+        }
+      </script>
+    </th:block>
+  </th:block>
+</html>
